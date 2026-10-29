@@ -1,20 +1,22 @@
 def parse_record(line: str) -> dict:
-
+    """
+    Разбирает строку «город;температура;дата» в словарь.
+    Если строка негодная — возбуждает ValueError.
+    """
     parts = line.split(';')
     
-  
+    # Проверка на количество полей
     if len(parts) != 3:
         raise ValueError(f"Ожидалось 3 поля, получено {len(parts)}")
         
     city, temp_str, date = parts
     
-   
+    # Проверка на пустые город или дату
     if not city.strip() or not date.strip():
         raise ValueError("Город или дата не могут быть пустыми")
         
     # Проверка температуры на число
     try:
-        # strip() на всякий случай убирает лишние пробелы вокруг числа
         temp = float(temp_str.strip())
     except ValueError:
         raise ValueError(f"Температура '{temp_str}' не является числом")
@@ -23,12 +25,15 @@ def parse_record(line: str) -> dict:
 
 
 def read_valid(lines: list[str]) -> tuple[list[dict], int]:
-  
+    """
+    Разбирает строки журнала, пропуская пустые и негодные.
+    Возвращает список корректных записей и количество ошибок.
+    """
     valid_records = []
     error_count = 0
     
     for line in lines:
-       
+        # Если строка пустая или состоит только из пробелов — пропускаем молча
         if not line.strip():
             continue
             
@@ -36,14 +41,16 @@ def read_valid(lines: list[str]) -> tuple[list[dict], int]:
             record = parse_record(line)
             valid_records.append(record)
         except ValueError:
-           
+            # Если parse_record выдал ошибку — увеличиваем счетчик
             error_count += 1
             
     return valid_records, error_count
 
 
 def average_by_city(records: list[dict]) -> dict:
-   
+    """
+    Считает среднюю температуру по каждому городу, округляя до десятых.
+    """
     total = {}
     count = {}
     
@@ -61,13 +68,17 @@ def average_by_city(records: list[dict]) -> dict:
 
 
 def warmest_city(records: list[dict]) -> str:
-   
+    """
+    Возвращает город с наибольшей средней температурой.
+    При равенстве — первый по алфавиту.
+    """
     if not records:
         return ""
         
     averages = average_by_city(records)
     
-   
+    # ВОТ ЗДЕСЬ создается переменная sorted_cities
+    sorted_cities = sorted(averages.keys())
     
     best_city = sorted_cities[0]
     max_temp = averages[best_city]
@@ -78,5 +89,7 @@ def warmest_city(records: list[dict]) -> str:
             best_city = city
             
     return best_city
+
+
 
 
