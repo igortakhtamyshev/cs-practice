@@ -1,5 +1,13 @@
 def parse_record(line: str) -> dict:
     city, temp, date = line.split(";")
+     if len(parts) != 3:
+        raise ValueError(f"Ожидалось 3 поля, получено {len(parts)}")
+        
+    city, temp, date = parts 
+    
+    if not city or not date:
+        raise ValueError("Город или дата не могут быть пустыми")
+        
     return {"city": city, "temp": float(temp), "date": date}
 
 def read_valid(lines: list[str]) -> list[dict]:
@@ -25,19 +33,5 @@ def warmest_city(records: list[dict]) -> str:
             best = city
     return best
 
-def parse_record(line: str) -> dict:
-    parts = line.split(";")
-    
-    
-    if len(parts) != 3:
-        raise ValueError(f"Ожидалось 3 поля, получено {len(parts)}")
-        
-    city, temp, date = parts
-    
-    # ДОБАВЛЕНО: проверка на пустые город или дату
-    if not city or not date:
-        raise ValueError("Город или дата не могут быть пустыми")
-        
-    return {"city": city, "temp": float(temp), "date": date}
 
 
