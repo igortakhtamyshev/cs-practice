@@ -7,7 +7,13 @@ def parse_record(line: str) -> dict:
     
     if not city or not date:
         raise ValueError("Город или дата не могут быть пустыми")
+    try:
+        temp = float(temp_str)
+    except ValueError:
+        raise ValueError(f"Температура '{temp_str}' не является числом")
+     
         
+
     return {"city": city, "temp": float(temp), "date": date}
 
 def read_valid(lines: list[str]) -> list[dict]:
